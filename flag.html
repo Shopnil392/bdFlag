@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dynamic Bangladesh Flag</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    canvas {
+      border: 2px solid #333;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="flagCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById("flagCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Set canvas size
+    canvas.width = 600;
+    canvas.height = 400;
+
+    const width = canvas.width;
+    const height = canvas.height;
+
+    let time = 0;
+
+    function drawFlag() {
+      ctx.clearRect(0, 0, width, height);
+
+      const stripeHeight = 5;
+      const waveAmplitude = 8;
+      const waveLength = 100;
+
+      for (let y = 0; y < height; y += stripeHeight) {
+        const offsetX = Math.sin((y / waveLength) + time) * waveAmplitude;
+
+        ctx.beginPath();
+        ctx.fillStyle = "#006a4e"; // Green
+        ctx.moveTo(0 + offsetX, y);
+        ctx.lineTo(width + offsetX, y);
+        ctx.lineTo(width + offsetX, y + stripeHeight);
+        ctx.lineTo(0 + offsetX, y + stripeHeight);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Draw the red circle (Bangladesh flag emblem)
+      const circleX = width * 0.45 + Math.sin(time) * 5;
+      const circleY = height / 2;
+      const circleRadius = 80;
+
+      ctx.beginPath();
+      ctx.fillStyle = "#f42a41";
+      ctx.arc(circleX, circleY, circleRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function animate() {
+      time += 0.05;
+      drawFlag();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
 
